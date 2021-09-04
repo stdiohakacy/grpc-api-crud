@@ -70,6 +70,28 @@ function deserialize_blog_ReadBlogResponse(buffer_arg) {
   return protos_blog_pb.ReadBlogResponse.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_blog_UpdateBlogRequest(arg) {
+  if (!(arg instanceof protos_blog_pb.UpdateBlogRequest)) {
+    throw new Error('Expected argument of type blog.UpdateBlogRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_blog_UpdateBlogRequest(buffer_arg) {
+  return protos_blog_pb.UpdateBlogRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_blog_UpdateBlogResponse(arg) {
+  if (!(arg instanceof protos_blog_pb.UpdateBlogResponse)) {
+    throw new Error('Expected argument of type blog.UpdateBlogResponse');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_blog_UpdateBlogResponse(buffer_arg) {
+  return protos_blog_pb.UpdateBlogResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 
 var BlogServiceService = exports.BlogServiceService = {
   listBlog: {
@@ -104,6 +126,17 @@ var BlogServiceService = exports.BlogServiceService = {
     requestDeserialize: deserialize_blog_CreateBlogRequest,
     responseSerialize: serialize_blog_CreateBlogResponse,
     responseDeserialize: deserialize_blog_CreateBlogResponse,
+  },
+  updateBlog: {
+    path: '/blog.BlogService/UpdateBlog',
+    requestStream: false,
+    responseStream: false,
+    requestType: protos_blog_pb.UpdateBlogRequest,
+    responseType: protos_blog_pb.UpdateBlogResponse,
+    requestSerialize: serialize_blog_UpdateBlogRequest,
+    requestDeserialize: deserialize_blog_UpdateBlogRequest,
+    responseSerialize: serialize_blog_UpdateBlogResponse,
+    responseDeserialize: deserialize_blog_UpdateBlogResponse,
   },
 };
 

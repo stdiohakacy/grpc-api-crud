@@ -73,10 +73,39 @@ function callReadBlog() {
     });
 }
 
+function callUpdateBlog() {
+    const client = new blogService.BlogServiceClient(
+        'localhost:50051',
+        credentials,
+    );
+
+    const blog = new blogs.Blog();
+    blog.setId("1");
+    blog.setAuthor("Nguyen Duy");
+    blog.setTitle("First blog");
+    blog.setContent("This is greet!");
+
+    const updateBlogRequest = new blogs.UpdateBlogRequest();
+    updateBlogRequest.setBlog(blog);
+
+    client.updateBlog(updateBlogRequest, (error, response) => {
+        if(!error) {
+            console.log(response.toString());
+        } else {
+            if(error.code === grpc.status.NOT_FOUND) {
+                console.log('Not found!');
+            } else {
+
+            }
+        }
+    });
+}
+
 function main() {
-    callReadBlog();
+    // callReadBlog();
     // callListBlogs();
     // callCreateBlog();
+    callUpdateBlog();
 }
 
 main();

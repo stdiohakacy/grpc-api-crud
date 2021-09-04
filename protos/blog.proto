@@ -6,6 +6,7 @@ service BlogService {
     rpc ListBlog (ListBlogRequest) returns (stream ListBlogResponse) {};
     rpc ReadBlog (ReadBlogRequest) returns (ReadBlogResponse) {};
     rpc CreateBlog (CreateBlogRequest) returns (CreateBlogResponse) {};
+    rpc UpdateBlog (UpdateBlogRequest) returns (UpdateBlogResponse) {};
 }
 message Blog {
     string id = 1;
@@ -36,5 +37,14 @@ message CreateBlogRequest {
 }
 
 message CreateBlogResponse {
+    Blog blog = 1;
+}
+
+// ==== Update blog ====
+message UpdateBlogRequest {
+    Blog blog = 1;
+}
+
+message UpdateBlogResponse {
     Blog blog = 1;
 }

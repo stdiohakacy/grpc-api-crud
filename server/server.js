@@ -87,9 +87,39 @@ function readBlog(call, callback) {
         });
 }
 
+function updateBlog(call, callback) {
+    const id = call.request.getBlog().getId();
+    const author = call.request.getBlog().getAuthor();
+    const title = call.request.getBlog().getTitle();
+    const content = call.request.getBlog().getContent();
+    
+    knex("blogs").where({ id: parseInt(id) }).update({
+        author,
+        title,
+        content,
+    }).returning('*').then(data => {
+        if(data.length) {
+            const blog = new blogs.Blog();
+            blog.setId(data[0].id);
+            blog.setAuthor(data[0].author);
+            blog.setTitle(data[0].title);
+            blog.setContent(data[0].content);
+
+            const updateBlogResponse = new blogs.UpdateBlogResponse();
+            updateBlogResponse.setBlog(blog);
+            callback(null, updateBlogResponse);
+        }
+    })
+}
+
 function main() {
     const server = new grpc.Server();
-    server.addService(service.BlogServiceService, { listBlog, createBlog, readBlog });
+    server.addService(service.BlogServiceService, { 
+        listBlog, 
+        readBlog, 
+        createBlog, 
+        updateBlog,
+    });
     server.bindAsync('localhost:50051', 
     // unsafeCredential,
     credentials,
