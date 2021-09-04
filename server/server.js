@@ -37,11 +37,33 @@ function listBlog(call, callback) {
     });
 }
 
+function createBlog(call, callback) {
+    console.log(`Received create blog request`);
+    const blog = call.request.getBlog();
+    knex('blogs').insert({
+        author: blog.getAuthor(),
+        title: blog.getTitle(),
+        content: blog.getContent(),
+    }).then(() => {
+        const data = new blogs.Blog();
+        data.setId(blog.getId());
+        data.setAuthor(blog.getAuthor());
+        data.setTitle(blog.getTitle());
+        data.setContent(blog.getContent());
+
+        const blogResponse = new blogs.CreateBlogResponse();
+        blogResponse.setBlog(data);
+        console.log(`Inserted!`);
+
+        callback(null, blogResponse);
+
+    });
+}
+
 function main() {
     const server = new grpc.Server();
-    server.addService(service.BlogServiceService, { listBlog });
+    server.addService(service.BlogServiceService, { listBlog, createBlog });
     server.bindAsync('localhost:50051', 
-    // grpc.ServerCredentials.createInsecure(),
     // unsafeCredential,
     credentials,
     () => {

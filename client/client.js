@@ -30,8 +30,31 @@ function callListBlogs() {
     });
 }
 
+function callCreateBlog() {
+    const client = new blogService.BlogServiceClient(
+        'localhost:50051',
+        credentials,
+    )
+
+    const blog = new blogs.Blog();
+    blog.setAuthor("Nguyen Duy");
+    blog.setTitle("First blog");
+    blog.setContent("This is greet!");
+
+    const blogRequest = new blogs.CreateBlogRequest();
+    blogRequest.setBlog(blog);
+    client.createBlog(blogRequest, (error, response) => {
+        if(!error) {
+            console.log(response.toString());
+        } else {
+            console.error(error);
+        }
+    });
+}
+
 function main() {
     callListBlogs();
+    callCreateBlog();
 }
 
 main();
