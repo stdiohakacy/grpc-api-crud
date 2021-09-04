@@ -101,11 +101,35 @@ function callUpdateBlog() {
     });
 }
 
+function callDeleteBlog() {
+    const client = new blogService.BlogServiceClient(
+        'localhost:50051',
+        credentials,
+    );
+    const deletedBlogRequest = new blogs.DeleteBlogRequest();
+    const id = "1";
+
+    deletedBlogRequest.setId(id);
+    
+    client.deleteBlog(deletedBlogRequest, (error, response) => {
+        if(!error) {
+            console.log(response.toString());
+        } else {
+            if(error.code === grpc.status.NOT_FOUND) {
+                console.log('Not found!');
+            } else {
+                console.log(`Something went wrong!`);
+            }
+        }
+    })
+}
+
 function main() {
     // callReadBlog();
     // callListBlogs();
     // callCreateBlog();
-    callUpdateBlog();
+    // callUpdateBlog();
+    callDeleteBlog();
 }
 
 main();

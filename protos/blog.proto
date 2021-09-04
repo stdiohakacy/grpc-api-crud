@@ -7,7 +7,9 @@ service BlogService {
     rpc ReadBlog (ReadBlogRequest) returns (ReadBlogResponse) {};
     rpc CreateBlog (CreateBlogRequest) returns (CreateBlogResponse) {};
     rpc UpdateBlog (UpdateBlogRequest) returns (UpdateBlogResponse) {};
+    rpc DeleteBlog (DeleteBlogRequest) returns (DeleteBlogResponse) {};
 }
+
 message Blog {
     string id = 1;
     string author = 2;
@@ -47,4 +49,13 @@ message UpdateBlogRequest {
 
 message UpdateBlogResponse {
     Blog blog = 1;
+}
+
+// ==== Update blog ====
+message DeleteBlogRequest {
+    string id = 1;
+}
+
+message DeleteBlogResponse {
+    string id = 1;
 }

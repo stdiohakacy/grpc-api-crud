@@ -112,6 +112,25 @@ function updateBlog(call, callback) {
     })
 }
 
+function deleteBlog(call, callback) {
+    const id = call.request.getId();
+    knex("blogs").where({ id: parseInt(id) })
+    .delete()
+    .returning('id')
+    .then(data => {
+        if(data) {
+            const deleteBlogResponse = new blogs.DeleteBlogResponse();
+            deleteBlogResponse.setId(data[0].id);
+            callback(null, deleteBlogResponse);
+        } else {
+            return callback({
+                code: grpc.status.NOT_FOUND,
+                message: "Blog with the corresponding id was not found!",
+            })
+        }
+    })
+}
+
 function main() {
     const server = new grpc.Server();
     server.addService(service.BlogServiceService, { 
@@ -119,6 +138,7 @@ function main() {
         readBlog, 
         createBlog, 
         updateBlog,
+        deleteBlog,
     });
     server.bindAsync('localhost:50051', 
     // unsafeCredential,
