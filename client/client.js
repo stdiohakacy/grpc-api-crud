@@ -52,9 +52,31 @@ function callCreateBlog() {
     });
 }
 
+function callReadBlog() {
+    const client = new blogService.BlogServiceClient(
+        'localhost:50051',
+        credentials,
+    );
+
+    const readBlogRequest = new blogs.ReadBlogRequest();
+    readBlogRequest.setId("1");
+    client.readBlog(readBlogRequest, (error, response) => {
+        if(!error) {
+            console.log(response.toString());
+        } else {
+            if(error.code === grpc.status.NOT_FOUND) {
+                console.log('Not found!');
+            } else {
+
+            }
+        }
+    });
+}
+
 function main() {
-    callListBlogs();
-    callCreateBlog();
+    callReadBlog();
+    // callListBlogs();
+    // callCreateBlog();
 }
 
 main();

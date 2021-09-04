@@ -60,9 +60,36 @@ function createBlog(call, callback) {
     });
 }
 
+function readBlog(call, callback) {
+    console.log(`Received blog request`);
+    const id = call.request.getId();
+    knex("blogs")
+        .where({ id: parseInt(id) })
+        .then(data => {
+            if(data.length) {
+                const blog = new blogs.Blog();
+                blog.setId(id);
+                blog.setAuthor(data[0].author);
+                blog.setTitle(data[0].title);
+                blog.setContent(data[0].content);
+
+                const blogResponse = new blogs.ReadBlogResponse();
+                blogResponse.setBlog(blog);
+
+                callback(null, blogResponse);
+            } else {
+                console.log(`Blog not found`);
+                return callback({
+                    code: grpc.status.NOT_FOUND,
+                    message: `Blog not found!`,
+                })
+            }
+        });
+}
+
 function main() {
     const server = new grpc.Server();
-    server.addService(service.BlogServiceService, { listBlog, createBlog });
+    server.addService(service.BlogServiceService, { listBlog, createBlog, readBlog });
     server.bindAsync('localhost:50051', 
     // unsafeCredential,
     credentials,
