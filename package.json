@@ -19,6 +19,8 @@
   "homepage": "https://github.com/stdiohakacy/grpc-api-crud#readme",
   "dependencies": {
     "knex": "^0.95.11",
-    "pg": "^8.7.1"
+    "pg": "^8.7.1",
+    "@grpc/grpc-js": "^1.3.7",
+    "google-protobuf": "^3.17.3"
   }
 }
